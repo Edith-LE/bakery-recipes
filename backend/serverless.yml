@@ -1,12 +1,12 @@
 service:
-  name: serverless-todo-app
+  name: bakery-recipes-serverless-app
 
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
 
-package:
-  individually: true
+# package:
+#   individually: true
 
 provider:
   name: aws
@@ -20,6 +20,7 @@ provider:
     apiGateway: true
 
   environment:
+    RECIPES_TABLE: Recipes-{self:provider.stage}
     TODOS_TABLE: Todos-${self:provider.stage}
     USER_ID_INDEX: UserIdIndex 
     IMAGES_S3_BUCKET: serverless-todos-images-edithle-${self:provider.stage}
@@ -70,8 +71,8 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
 
   # TODO: Configure this function
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateRecipe:
+    handler: src/lambda/http/createRecipe.handler
     events:
       - http:
           method: post
@@ -80,13 +81,13 @@ functions:
           authorizer: Auth
           request:
             schema:
-              application/json: ${file(src/schemas/create-todo-request.json)}
+              application/json: ${file(src/schemas/create-recipe-request.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}
   # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -156,6 +157,30 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi
 
+
+    RecipesDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: recipeId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: recipeId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.RECIPES_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_ID_INDEX}
+            KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: recipeId
+              KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
     TodosDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -164,13 +189,13 @@ resources:
             AttributeType: S
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: createdAt
-            AttributeType: S
+          # - AttributeName: createdAt
+          #   AttributeType: S
         KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
           - AttributeName: todoId
-            KeyType: RANGE
+            KeyType: HASH
+          # - AttributeName: todoId
+          #   KeyType: RANGE
         
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TODOS_TABLE}
@@ -179,7 +204,7 @@ resources:
             KeySchema:
             - AttributeName: userId
               KeyType: HASH
-            - AttributeName: createdAt
+            - AttributeName: todoId
               KeyType: RANGE
             Projection:
               ProjectionType: ALL
