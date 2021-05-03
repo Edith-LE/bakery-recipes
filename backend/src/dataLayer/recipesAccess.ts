@@ -7,7 +7,7 @@ const XAWS = AWSXRay.captureAWS(AWS)
 // import {TodoItem} from '../models/TodoItem'
 import {RecipeItem} from '../models/RecipeItem'
 // import { TodoUpdate } from '../models/TodoUpdate'
-// import {User} from '../models/User'
+import {User} from '../models/User'
 //import {TodoUpdate} from '../models/TodoUpdate'
 
 
@@ -15,7 +15,8 @@ export class RecipeAccess{
 
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    private readonly recipesTable = process.env.RECIPES_TABLE,){
+    private readonly recipesTable = process.env.RECIPES_TABLE,
+    private readonly userIdIndex = process.env.USER_ID_INDEX){
   }
 
   async createRecipe(recipe: RecipeItem): Promise<RecipeItem>{
@@ -48,18 +49,18 @@ export class RecipeAccess{
   //   return todo as TodoItem
   // }
 
-  // async getTodos(user: User):Promise<TodoItem[]>{
-  //   const result = await this.docClient.query({
-  //     TableName: this.todosTable,
-  //     IndexName: this.userIdIndex,
-  //     KeyConditionExpression: "userId = :userId",
-  //     ExpressionAttributeValues:{
-  //       ":userId": user.userId        
-  //     }
-  //   }).promise()
-  //   const todos = result.Items ? result.Items : []
-  //   return todos as TodoItem[] 
-  // }
+  async getRecipes(user: User):Promise<RecipeItem[]>{
+    const result = await this.docClient.query({
+      TableName: this.recipesTable,
+      IndexName: this.userIdIndex,
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues:{
+        ":userId": user.userId        
+      }
+    }).promise()
+    const recipes = result.Items ? result.Items : []
+    return recipes as RecipeItem[] 
+  }
 
   // async deleteTodo(todo):Promise<TodoItem>{
   //   await this.docClient.delete({

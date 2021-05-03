@@ -38,12 +38,12 @@ export async function createRecipe(
   
 // }
 
-// export async function getTodos(
-//   jwt: string
-//   ):Promise <TodoItem[]>{
-//   const userId = parseUserId(jwt)
-//   return await recipeAccess.getTodos({userId})
-// }
+export async function getRecipes(
+  jwt: string
+  ):Promise <RecipeItem[]>{
+  const userId = parseUserId(jwt)
+  return await recipeAccess.getRecipes({userId})
+}
 
 // export async function deleteTodo(
 //   todoId: string,

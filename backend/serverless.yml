@@ -51,24 +51,24 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
-  # GetTodos:
-  #   handler: src/lambda/http/getTodos.handler
-  #   events:
-  #     - http:
-  #         method: get
-  #         path: todos
-  #         cors: true
-  #         authorizer: Auth
-  #   iamRoleStatementsInherit: true
-  #   iamRoleStatements:
-  #     - Effect: Allow
-  #       Action:
-  #         - dynamodb:Query
-  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-  #     - Effect: Allow
-  #       Action:
-  #         - dynamodb:Query
-  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
+  GetRecipes:
+    handler: src/lambda/http/getRecipes.handler
+    events:
+      - http:
+          method: get
+          path: recipes
+          cors: true
+          authorizer: Auth
+    iamRoleStatementsInherit: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RECIPES_TABLE}/index/${self:provider.environment.USER_ID_INDEX}
 
   # TODO: Configure this function
   CreateRecipe:
@@ -206,7 +206,7 @@ resources:
               AllowedMethods:
                 # - GET
                 - PUT
-                # - POST
+                - POST
                 # - DELETE
                 # - HEAD
               MaxAge: 3000
