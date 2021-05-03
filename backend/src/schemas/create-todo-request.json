@@ -1,26 +1,19 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "recipe",
+  "title": "todo",
   "type": "object",
   "properties": {
     "name": {
       "type": "string",
       "minLength": 1
     },
-    "ingredients": {
+    "dueDate": {
       "type": "string"
-    },
-    "time":{
-      "type": "string"
-    },
-    "portions":{
-      "type": "number" 
     }
   },
   "required": [
     "name",
-    "ingredients",
-    "time"
+    "dueDate"
     
   ],
   "additionalProperties": false

@@ -2,20 +2,20 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
+import { CreateRecipeRequest } from '../../requests/CreateRecipeRequest'
 
-import {createTodo} from '../../businessLogic/todos'
+import {createRecipe} from '../../businessLogic/recipes'
 
 import { createLogger } from '../../utils/logger'
 
-const logger = createLogger('create todo')
+const logger = createLogger('create recipe')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
-  logger.info('start create todo', event)
+  logger.info('start create recipe', event)
   
 
-  const newTodo: CreateTodoRequest = JSON.parse(event.body)
+  const newRecipe: CreateRecipeRequest = JSON.parse(event.body)
   
   const auth = event.headers.Authorization
   const split = auth.split(' ')
@@ -23,9 +23,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
   // TODO: Implement creating a new TODO item
   try{
-    const newItem = await createTodo(newTodo, jwt)
+    const newItem = await createRecipe(newRecipe, jwt)
 
-    logger.info('done create todo', newItem)
+    logger.info('done create recipe', newItem)
 
     return{
       statusCode: 201,
@@ -38,7 +38,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       })
     }
   }catch (error){
-    logger.info('fail create todo', error)
+    logger.info('fail create recipe', error)
     return {
       statusCode: 500,
       headers:{
