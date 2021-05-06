@@ -78,23 +78,22 @@ export class RecipeAccess{
     return recipe
   }
 
-  // async updateAttachmentUrl(todo): Promise <TodoItem>{
-  //   await this.docClient.update({
-  //     TableName: this.todosTable,
-  //     Key:{
-  //       userId: todo.userId,
-  //       todoId: todo.todoId
-  //     },
-  //     UpdateExpression: "set attachmentUrl = :attachmentUrl",
-  //     ConditionExpression: "userId = :userId",
-  //     ExpressionAttributeValues:{
-  //       ":attachmentUrl": todo.imageUrl,
-  //       ":userId": todo.userId
-  //     },
-  //     ReturnValues:"UPDATED_NEW"
-  //   }).promise()
-  //   return todo
-  // }
+  async updateAttachmentUrl(recipe): Promise <RecipeItem>{
+    await this.docClient.update({
+      TableName: this.recipesTable,
+      Key:{
+        recipeId: recipe.recipeId
+      },
+      UpdateExpression: "set attachmentUrl = :attachmentUrl",
+      ConditionExpression: "userId = :userId",
+      ExpressionAttributeValues:{
+        ":attachmentUrl": recipe.imageUrl,
+        ":userId": recipe.userId
+      },
+      ReturnValues:"UPDATED_NEW"
+    }).promise()
+    return recipe
+  }
 
 }
 

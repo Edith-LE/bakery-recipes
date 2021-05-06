@@ -53,11 +53,11 @@ export async function deleteRecipe(
   return await recipeAccess.deleteRecipe({userId, recipeId})
 }
 
-// export async function updateAttachmentUrl(
-//   todoId: string,
-//   imageUrl: string,
-//   jwt:string
-// ):Promise <TodoItem>{
-//   const userId = parseUserId(jwt)
-//   return await recipeAccess.updateAttachmentUrl({userId, todoId, imageUrl})
-// }
+export async function updateAttachmentUrl(
+  recipeId: string,
+  imageUrl: string,
+  jwt:string
+):Promise <RecipeItem>{
+  const userId = parseUserId(jwt)
+  return await recipeAccess.updateAttachmentUrl({userId, recipeId, imageUrl})
+}
