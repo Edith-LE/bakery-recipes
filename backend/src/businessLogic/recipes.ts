@@ -4,7 +4,7 @@ import * as uuid from 'uuid'
 import {RecipeItem} from '../models/RecipeItem'
 import {RecipeAccess} from '../dataLayer/recipesAccess'
 import {CreateRecipeRequest} from '../requests/CreateRecipeRequest'
-// import {UpdateTodoRequest} from '../requests/UpdateTodoRequest'
+import {UpdateRecipe} from '../requests/UpdateRecipeRequest'
 import {parseUserId} from '../auth/utils'
 
 const recipeAccess = new RecipeAccess() 
@@ -28,15 +28,15 @@ export async function createRecipe(
   })
 }
 
-// export async function updateTodo(
-//   updateTodoRequest: UpdateTodoRequest,
-//   jwt: string
-// ): Promise<TodoItem> {
+export async function updateRecipe(
+  updateRecipe: UpdateRecipe,
+  jwt: string
+): Promise<RecipeItem> {
 
-//   const userId = parseUserId(jwt)
-//   return await recipeAccess.updateTodo({userId, ...updateTodoRequest})
+  const userId = parseUserId(jwt)
+  return await recipeAccess.updateRecipe({userId, ...updateRecipe})
   
-// }
+}
 
 export async function getRecipes(
   jwt: string
@@ -45,13 +45,13 @@ export async function getRecipes(
   return await recipeAccess.getRecipes({userId})
 }
 
-// export async function deleteTodo(
-//   todoId: string,
-//   jwt: string
-// ):Promise<TodoItem>{
-//   const userId = parseUserId(jwt)
-//   return await recipeAccess.deleteTodo({userId, todoId})
-// }
+export async function deleteRecipe(
+  recipeId: string,
+  jwt: string
+):Promise<RecipeItem>{
+  const userId = parseUserId(jwt)
+  return await recipeAccess.deleteRecipe({userId, recipeId})
+}
 
 // export async function updateAttachmentUrl(
 //   todoId: string,

@@ -4,9 +4,9 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-// import {TodoItem} from '../models/TodoItem'
+
 import {RecipeItem} from '../models/RecipeItem'
-// import { TodoUpdate } from '../models/TodoUpdate'
+import {RecipeUpdate} from '../models/RecipeUpdate'
 import {User} from '../models/User'
 //import {TodoUpdate} from '../models/TodoUpdate'
 
@@ -27,27 +27,29 @@ export class RecipeAccess{
     return recipe
   }
 
-  // async updateTodo(recipe:recipeUpdate): Promise<RecipeItem>{
-  //   await this.docClient.update({
-  //     TableName: this.recipesTable,
-  //     Key:{
-  //       userId: recipe.userId,
-  //       recipeId: recipe.recipeId
-  //     },
-  //     ExpressionAttributeNames:{"#N": "name"},
-  //     UpdateExpression:"set #N = :todoName, dueDate = :dueDate, done = :done",
-  //     ConditionExpression: "userId = :userId",
-  //     ExpressionAttributeValues:{
-  //       ":todoName": todo.name,
-  //       ":dueDate": todo.dueDate,
-  //       ":done": todo.done,
-  //       ":userId": todo.userId
-  //     },
-  //     ReturnValues: "UPDATED_NEW"
-  //   }).promise()
+  async updateRecipe(recipe:RecipeUpdate): Promise<RecipeItem>{
+    console.log(recipe,"recipe");
+    
+    await this.docClient.update({
+      TableName: this.recipesTable,
+      Key:{
+        recipeId: recipe.recipeId
+      },
+      ExpressionAttributeNames:{"#N": "name", "#T": "time"},
+      UpdateExpression:"set #N = :recipeName, ingredients = :ingredients, portions = :portions, #T = :recipeTime",
+      ConditionExpression: "userId = :userId",
+      ExpressionAttributeValues:{
+        ":recipeName": recipe.name,
+        ":userId": recipe.userId,
+        ":ingredients": recipe.ingredients,
+        ":portions": recipe.portions,
+        ":recipeTime": recipe.time
+      },
+      ReturnValues: "UPDATED_NEW"
+    }).promise()
 
-  //   return todo as TodoItem
-  // }
+    return recipe as RecipeItem
+  }
 
   async getRecipes(user: User):Promise<RecipeItem[]>{
     const result = await this.docClient.query({
@@ -62,20 +64,19 @@ export class RecipeAccess{
     return recipes as RecipeItem[] 
   }
 
-  // async deleteTodo(todo):Promise<TodoItem>{
-  //   await this.docClient.delete({
-  //     TableName: this.todosTable,
-  //     Key:{
-  //       userId: todo.userId,
-  //       todoId: todo.todoId
-  //     },
-  //     ConditionExpression: "userId = :userId",
-  //     ExpressionAttributeValues:{
-  //       ":userId": todo.userId
-  //     }
-  //   }).promise()
-  //   return todo
-  // }
+  async deleteRecipe(recipe):Promise<RecipeItem>{
+    await this.docClient.delete({
+      TableName: this.recipesTable,
+      Key:{
+        recipeId: recipe.recipeId
+      },
+      ConditionExpression: "userId = :userId",
+      ExpressionAttributeValues:{
+        ":userId": recipe.userId
+      }
+    }).promise()
+    return recipe
+  }
 
   // async updateAttachmentUrl(todo): Promise <TodoItem>{
   //   await this.docClient.update({
