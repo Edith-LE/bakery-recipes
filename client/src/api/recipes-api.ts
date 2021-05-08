@@ -38,9 +38,9 @@ export async function createRecipe(
   return response.data.item
 }
 
-export async function patchTodo(
+export async function patchRecipe(
   idToken: string,
-  todoId: string,
+  recipeId: string,
   updatedTodo: UpdateTodoRequest
 ): Promise<void> {
   await Axios.patch(`${apiEndpoint}/todos/${todoId}`, JSON.stringify(updatedTodo), {
@@ -65,9 +65,9 @@ export async function deleteRecipe(
 
 export async function getUploadUrl(
   idToken: string,
-  todoId: string
+  recipeId: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/todos/${todoId}/attachment`, '', {
+  const response = await Axios.post(`${apiEndpoint}/recipes/${recipeId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`

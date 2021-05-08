@@ -49,8 +49,13 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
     this.setState({ recipeTime: event.target.value })
   }
 
-  onEditButtonClick = (recipeId: string) => {
-    this.props.history.push(`/recipes/${recipeId}/edit`)
+  onEditButtonClick = (recipe: Recipe) => {
+    this.props.history.push({
+      pathname:`/recipes/${recipe.recipeId}/edit`,
+      state: {
+        ...recipe
+      }
+    })
   }
 
   onRecipeCreate = async () => {
@@ -83,6 +88,8 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
       alert('Recipe deletion failed')
     }
   }
+
+  
 
 
   async componentDidMount() {
@@ -151,9 +158,10 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
               <p>ingredients:{recipe.ingredients}</p>
               <p>portions:{recipe.portions}</p>
               <p>time:{recipe.time}</p>
+              <img src={recipe.attachmentUrl} alt="recipe-image" />
               <div>
                 <button onClick={() => this.onRecipeDelete(recipe.recipeId)} > Delete </button>
-                <button onClick={() => this.onEditButtonClick(recipe.recipeId)} > Edit </button>
+                <button onClick={() => this.onEditButtonClick(recipe)} > Edit </button>
               </div>
             </div>
           )

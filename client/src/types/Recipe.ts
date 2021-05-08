@@ -2,7 +2,7 @@ export interface Recipe {
   recipeId: string
   name: string
   ingredients: string
-  time: boolean
+  time: string
   portions: number,
   attachmentUrl?: string
 }

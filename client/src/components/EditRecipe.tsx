@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/todos-api'
+import { History } from 'history'
+import { getUploadUrl, uploadFile } from '../api/recipes-api'
 
 enum UploadState {
   NoUpload,
@@ -9,27 +10,39 @@ enum UploadState {
   UploadingFile,
 }
 
-interface EditTodoProps {
+interface EditRecipesProps {
   match: {
     params: {
-      todoId: string
+      recipeId: string
     }
   }
   auth: Auth
+  location: any,
+  history: History
 }
 
-interface EditTodoState {
+interface EditRecipeState {
   file: any
   uploadState: UploadState
+  name: string
+  ingredients: string
+  time: string
+  portions: number,
+  attachmentUrl?: string
 }
 
-export class EditTodo extends React.PureComponent<
-  EditTodoProps,
-  EditTodoState
+export class EditRecipe extends React.PureComponent<
+  EditRecipesProps,
+  EditRecipeState
 > {
-  state: EditTodoState = {
+  state: EditRecipeState = {
     file: undefined,
-    uploadState: UploadState.NoUpload
+    uploadState: UploadState.NoUpload,
+    name: '',
+    ingredients: '',
+    time: '',
+    portions: 0,
+    attachmentUrl: ''
   }
 
   handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +64,7 @@ export class EditTodo extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.todoId)
+      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.recipeId)
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, this.state.file)
@@ -70,11 +83,52 @@ export class EditTodo extends React.PureComponent<
     })
   }
 
+  handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ name: event.target.value })
+  }
+
+  handleIngredientsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ ingredients: event.target.value })
+  }
+
+  handlePortionsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ portions: Number(event.target.value) })
+  }
+
+  handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ time: event.target.value })
+  }
+
+  onRecipeUpdate = () =>{
+    console.log("ya vamo' a cambiar");
+    
+  }
+
+  componentDidMount() {
+    const { name, ingredients, portions, time, attachmentUrl } = this.props.location.state
+    this.setState({
+      name,
+      ingredients,
+      portions,
+      time,
+      attachmentUrl
+    })
+  }
+
+
+
   render() {
     return (
       <div>
         <h1>Upload new image</h1>
 
+        <div>
+          <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+          <textarea value={this.state.ingredients} onChange={this.handleIngredientsChange}/>
+          <input type="text" value={this.state.time} onChange={this.handleTimeChange}/>
+          <input type="number" value={this.state.portions} onChange={this.handlePortionsChange}/>
+          
+        </div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <label>File</label>
@@ -88,6 +142,7 @@ export class EditTodo extends React.PureComponent<
 
           {this.renderButton()}
         </Form>
+        <button onClick={this.onRecipeUpdate}>Update Recipe</button>
       </div>
     )
   }
