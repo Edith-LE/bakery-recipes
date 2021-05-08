@@ -2,7 +2,8 @@ import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
 import { History } from 'history'
-import { getUploadUrl, uploadFile } from '../api/recipes-api'
+import { getUploadUrl, uploadFile, patchRecipe } from '../api/recipes-api'
+
 
 enum UploadState {
   NoUpload,
@@ -70,6 +71,7 @@ export class EditRecipe extends React.PureComponent<
       await uploadFile(uploadUrl, this.state.file)
 
       alert('File was uploaded!')
+      
     } catch (e) {
       alert('Could not upload a file: ' + e.message)
     } finally {
@@ -99,9 +101,14 @@ export class EditRecipe extends React.PureComponent<
     this.setState({ time: event.target.value })
   }
 
-  onRecipeUpdate = () =>{
-    console.log("ya vamo' a cambiar");
-    
+  onRecipeUpdate = async () =>{
+    await patchRecipe(this.props.auth.getIdToken(), this.props.match.params.recipeId, {
+      name: this.state.name,
+      ingredients: this.state.ingredients,
+      portions: this.state.portions,
+      time: this.state.time,
+    } )
+    this.props.history.push("/")
   }
 
   componentDidMount() {

@@ -1,5 +1,6 @@
-export interface UpdateTodoRequest {
+export interface UpdateRecipeRequest {
   name: string
-  dueDate: string
-  done: boolean
+  ingredients: string
+  portions: number
+  time: string 
 }

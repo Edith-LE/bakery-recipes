@@ -1,10 +1,8 @@
 import { apiEndpoint } from '../config'
-import { Todo } from '../types/Todo';
 import {Recipe} from '../types/Recipe'
-import { CreateTodoRequest } from '../types/CreateTodoRequest';
 import { CreateRecipeRequest } from '../types/CreateRecipeRequest'
 import Axios from 'axios'
-import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
+import { UpdateRecipeRequest } from '../types/UpdateRecipeRequest';
 
 //get all recipes
 
@@ -41,9 +39,9 @@ export async function createRecipe(
 export async function patchRecipe(
   idToken: string,
   recipeId: string,
-  updatedTodo: UpdateTodoRequest
+  updatedRecipe: UpdateRecipeRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/todos/${todoId}`, JSON.stringify(updatedTodo), {
+  await Axios.patch(`${apiEndpoint}/recipes/${recipeId}`, JSON.stringify(updatedRecipe), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
