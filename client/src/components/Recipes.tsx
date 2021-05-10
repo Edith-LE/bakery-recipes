@@ -1,8 +1,6 @@
 import { History } from 'history'
 import * as React from 'react'
 import {
-  Grid,
-  Header,
   Loader
 } from 'semantic-ui-react'
 import { getRecipes, createRecipe, deleteRecipe } from '../api/recipes-api'
@@ -102,12 +100,13 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
     } catch (e) {
       alert(`Failed to fetch recipes: ${e.message}`)
     }
-  }
+  } 
 
   render() {
     return (
-      <div>
-        <Header as="h1">Recipes</Header>
+      <div className='recipe-title'>
+        <h1 style={{fontSize:'54px', color:'#b34f4b', fontWeight:'bold', margin:'20px 0'}}>Recipes</h1>
+        <p style={{fontSize:'20px', lineHeight: '18px', maxWidth:'270px', color:'#b34f4b', textAlign:'center'}}>It's time to create and store your own recipes!</p>
 
         {this.renderCreateRecipe()}
         {this.renderRecipes()}
@@ -119,12 +118,16 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
 
   renderCreateRecipe(){
     return(
-      <div>
-        <input type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
-        <textarea value={this.state.recipeIngredients} onChange={this.handleIngredientsChange}/>
-        <input type="text" value={this.state.recipeTime} onChange={this.handleTimeChange}/>
-        <input type="number" value={this.state.recipePortions} onChange={this.handlePortionsChange}/>
-        <button onClick={this.onRecipeCreate}>Create Recipe</button>
+      <div className="create-recipe">
+        <label style={{margin:'15px'}}>Recipe Name</label>
+        <input style={{height:'30px', border:'none', borderRadius:'8px'}} type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
+        <label style={{margin:'15px'}}>Ingredients and steps to follow</label>
+        <textarea style={{height:'80px', border:'none', borderRadius:'8px'}}  value={this.state.recipeIngredients} onChange={this.handleIngredientsChange}/>
+        <label style={{margin:'15px'}}>Time (write on letters)</label>
+        <input style={{height:'30px', border:'none', borderRadius:'8px'}}  type="text" value={this.state.recipeTime} onChange={this.handleTimeChange}/>
+        <label style={{margin:'15px'}}>Portions</label>
+        <input style={{height:'30px', border:'none', borderRadius:'8px'}}  type="number" value={this.state.recipePortions} onChange={this.handlePortionsChange}/>
+        <button style={{width:'200px', height:'40px', borderRadius:'8px', background:'#CE864D', color:'#fff', border:'none', fontSize:'16px', fontWeight:'bold', margin:'20px 0', cursor:'pointer'}} onClick={this.onRecipeCreate}>Create Recipe</button>
       </div>
 
     )
@@ -140,25 +143,28 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
 
   renderLoading() {
     return (
-      <Grid.Row>
+      <div>
         <Loader indeterminate active inline="centered">
           Loading Recipes
         </Loader>
-      </Grid.Row>
+      </div>
     )
   }
 
   renderRecipesList() {
     return (
-      <Grid padded>
+      <div className='recipes' >
         {this.state.recipes.map((recipe) => {
           return(
-            <div key={recipe.recipeId}>
+            <div 
+              className='recipe-header' 
+              key={recipe.recipeId}
+            >
               <h1>{recipe.name}</h1>
               <p>ingredients:{recipe.ingredients}</p>
               <p>portions:{recipe.portions}</p>
               <p>time:{recipe.time}</p>
-              <img src={recipe.attachmentUrl} alt="recipe-image" />
+              <img src={recipe.attachmentUrl} alt="recipe-image"  style={{maxWidth:'280px'}}/>
               <div>
                 <button onClick={() => this.onRecipeDelete(recipe.recipeId)} > Delete </button>
                 <button onClick={() => this.onEditButtonClick(recipe)} > Edit </button>
@@ -166,7 +172,7 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
             </div>
           )
         })}
-      </Grid>
+      </div>
     )
   }
 }

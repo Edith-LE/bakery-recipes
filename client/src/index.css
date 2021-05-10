@@ -1,14 +1,69 @@
-body {
+
+
+*{
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Mukta', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+  padding: 0;  
+}
+
+
+
+.login-screen{
+  background-image: url('https://i.pinimg.com/564x/a6/c4/7a/a6c47adafaa803737d427e8a0477bf16.jpg');
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  
+}
+
+.login-title{
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  line-height: 25px;
+}
+
+.recipe-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #EBE9DE;
+
+}
+
+.create-recipe{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.recipes{
+
+}
+
+.recipe-header{
+
+}
+
+
+
+
+@media only screen and (min-width: 1200px){
+  .ui{
+    padding: 0;
+  }
+  .ui.grid.container{
+
+    width: 100%;
+  }
 }

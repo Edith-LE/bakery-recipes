@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
 import { History } from 'history'
 import { getUploadUrl, uploadFile, patchRecipe } from '../api/recipes-api'
@@ -130,25 +130,36 @@ export class EditRecipe extends React.PureComponent<
         <h1>Upload new image</h1>
 
         <div>
-          <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
-          <textarea value={this.state.ingredients} onChange={this.handleIngredientsChange}/>
-          <input type="text" value={this.state.time} onChange={this.handleTimeChange}/>
-          <input type="number" value={this.state.portions} onChange={this.handlePortionsChange}/>
+          <input 
+            type="text" 
+            value={this.state.name} 
+            onChange={this.handleNameChange}
+          />
+          <textarea 
+            value={this.state.ingredients} 
+            onChange={this.handleIngredientsChange}
+          />
+          <input 
+            type="text" value={this.state.time} 
+            onChange={this.handleTimeChange}
+          />
+          <input 
+            type="number" 
+            value={this.state.portions} 
+            onChange={this.handlePortionsChange}
+          />
           
         </div>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Field>
-            <label>File</label>
-            <input
-              type="file"
-              accept="image/*"
-              placeholder="Image to upload"
-              onChange={this.handleFileChange}
-            />
-          </Form.Field>
-
+        <form onSubmit={this.handleSubmit}>
+          <label>File</label>
+          <input
+            type="file"
+            accept="image/*"
+            placeholder="Image to upload"
+            onChange={this.handleFileChange}
+          />
           {this.renderButton()}
-        </Form>
+        </form>
         <button onClick={this.onRecipeUpdate}>Update Recipe</button>
       </div>
     )
