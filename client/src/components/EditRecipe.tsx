@@ -126,23 +126,30 @@ export class EditRecipe extends React.PureComponent<
 
   render() {
     return (
-      <div>
-        <h1>Upload new image</h1>
+      <div style={{padding: '30px', background:'#EBE9DE', width:'100vw', height:'100vh',}}>
+        <h1 style={{fontSize:'54px', color:'#b34f4b', fontWeight:'bold', margin:'20px 0'}}>{this.state.name}</h1>
 
-        <div>
+        <div className='edit-form'>
+          <label style={{margin:'15px 0', fontSize: '18px'}}>Recipe Name</label>
           <input 
+            style={{height:'30px', border:'none', borderRadius:'8px', padding: '6px'}}
             type="text" 
             value={this.state.name} 
             onChange={this.handleNameChange}
           />
+          <label style={{margin:'15px 0', fontSize: '18px'}}>Ingredients and steps to follow</label>
           <textarea 
+            style={{height:'100px', border:'none', borderRadius:'8px', padding: '6px'}}  
             value={this.state.ingredients} 
             onChange={this.handleIngredientsChange}
           />
+          <label style={{margin:'15px 0', fontSize: '18px'}}>Time (write on letters)</label>
           <input 
+            style={{height:'30px', border:'none', borderRadius:'8px', padding: '6px'}} 
             type="text" value={this.state.time} 
             onChange={this.handleTimeChange}
           />
+          <label style={{margin:'15px 0', fontSize: '18px'}}>Portions</label>
           <input 
             type="number" 
             value={this.state.portions} 
@@ -150,8 +157,8 @@ export class EditRecipe extends React.PureComponent<
           />
           
         </div>
-        <form onSubmit={this.handleSubmit}>
-          <label>File</label>
+        <form onSubmit={this.handleSubmit} style={{display:'flex', flexDirection: 'column'}}>
+          <label style={{fontSize:'24px', color:'#b34f4b', fontWeight:'bold', margin:'20px 0', lineHeight: '32px'}}>Do you have an image of your recipe? <br/> Upload one!</label>
           <input
             type="file"
             accept="image/*"
@@ -160,7 +167,9 @@ export class EditRecipe extends React.PureComponent<
           />
           {this.renderButton()}
         </form>
-        <button onClick={this.onRecipeUpdate}>Update Recipe</button>
+        <div style={{display:'flex', width:'100%', justifyContent: 'flex-end'}}>
+          <button style={{width:'200px', height:'40px', borderRadius:'8px', background:'#CE864D', color:'#fff', border:'none', fontSize:'16px', fontWeight:'bold', margin:'20px 0', cursor:'pointer'}} onClick={this.onRecipeUpdate}>Update Recipe</button>
+        </div>
       </div>
     )
   }

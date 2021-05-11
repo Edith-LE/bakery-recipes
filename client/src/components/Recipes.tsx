@@ -118,15 +118,15 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
 
   renderCreateRecipe(){
     return(
-      <div className="create-recipe">
+      <div className="create-recipe" >
         <label style={{margin:'15px'}}>Recipe Name</label>
-        <input style={{height:'30px', border:'none', borderRadius:'8px'}} type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
+        <input style={{height:'30px', border:'none', borderRadius:'8px', padding: '6px'}} type="text" value={this.state.recipeName} onChange={this.handleNameChange}/>
         <label style={{margin:'15px'}}>Ingredients and steps to follow</label>
-        <textarea style={{height:'80px', border:'none', borderRadius:'8px'}}  value={this.state.recipeIngredients} onChange={this.handleIngredientsChange}/>
+        <textarea style={{height:'80px', border:'none', borderRadius:'8px', padding: '6px'}}  value={this.state.recipeIngredients} onChange={this.handleIngredientsChange}/>
         <label style={{margin:'15px'}}>Time (write on letters)</label>
-        <input style={{height:'30px', border:'none', borderRadius:'8px'}}  type="text" value={this.state.recipeTime} onChange={this.handleTimeChange}/>
+        <input style={{height:'30px', border:'none', borderRadius:'8px', padding: '6px'}}  type="text" value={this.state.recipeTime} onChange={this.handleTimeChange}/>
         <label style={{margin:'15px'}}>Portions</label>
-        <input style={{height:'30px', border:'none', borderRadius:'8px'}}  type="number" value={this.state.recipePortions} onChange={this.handlePortionsChange}/>
+        <input style={{height:'30px', border:'none', borderRadius:'8px', padding: '6px'}}  type="number" value={this.state.recipePortions} onChange={this.handlePortionsChange}/>
         <button style={{width:'200px', height:'40px', borderRadius:'8px', background:'#CE864D', color:'#fff', border:'none', fontSize:'16px', fontWeight:'bold', margin:'20px 0', cursor:'pointer'}} onClick={this.onRecipeCreate}>Create Recipe</button>
       </div>
 
@@ -159,15 +159,18 @@ export class Recipes extends React.PureComponent<TRecipesProps, RecipesState> {
             <div 
               className='recipe-header' 
               key={recipe.recipeId}
+              style={{border:'5px solid #bd837c', borderStyle:'dotted', padding:'10px' }}
             >
-              <h1>{recipe.name}</h1>
-              <p>ingredients:{recipe.ingredients}</p>
-              <p>portions:{recipe.portions}</p>
-              <p>time:{recipe.time}</p>
-              <img src={recipe.attachmentUrl} alt="recipe-image"  style={{maxWidth:'280px'}}/>
-              <div>
-                <button onClick={() => this.onRecipeDelete(recipe.recipeId)} > Delete </button>
-                <button onClick={() => this.onEditButtonClick(recipe)} > Edit </button>
+              <h1 style={{color: '#7D201E', fontSize:'36px', lineHeight: '42px'}}>{recipe.name}</h1>
+              <p style={{fontSize:'18px', lineHeight:'28px'}}>ingredients:{recipe.ingredients}</p>
+              <p style={{fontSize:'16px', lineHeight:'24px'}}><span style={{fontSize:'18px', lineHeight:'24px', color:'rgb(125, 32, 30)', fontWeight:'bold'}}> portions: </span>{recipe.portions}</p>
+              <p style={{fontSize:'16px', lineHeight:'24px'}}><span style={{fontSize:'18px', lineHeight:'24px', color:'rgb(125, 32, 30)', fontWeight:'bold'}}> time: </span>{recipe.time}</p>
+              <div style={{display:'flex', width:'100%', justifyContent:'center', margin: '30px'}}>
+                <img src={recipe.attachmentUrl} alt="recipe-image"  style={{maxWidth:'300px', height:'auto'}}/>
+              </div>
+              <div style={{display:'flex', width:'100%', justifyContent: 'flex-end'}}>
+                <button onClick={() => this.onRecipeDelete(recipe.recipeId)} style={{width:'150px', height:'40px', border: 'none', borderRadius: '8px', color:'#ffff', fontSize: '18px', fontWeight: 'bold', background: 'rgb(206, 134, 77)', margin:'0 15px' }}> Delete </button>
+                <button onClick={() => this.onEditButtonClick(recipe)} style={{width:'150px', height:'40px', border: 'none', borderRadius: '8px', color:'#ffff', fontSize: '18px', fontWeight: 'bold', background: 'rgb(206, 134, 77)' }}> Edit </button>
               </div>
             </div>
           )
